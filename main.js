@@ -1,24 +1,37 @@
-const http = require("http");
+/* eslint no-console: ["error", { allow: ["log", "warn", "error"] }] */
+/* eslint-env node */
 
 const port = 33333;
-const version = "0.0.0.1";
+const version = "0.0.0.2";
 
-http.createServer( function( req, res ) {
-    const path = req.url.replace(/\/?(?:\?.*)?$/, "").toLowerCase();
-    switch( path ) {
-    case "":
-        res.writeHead( 200, { "Content-Type": "text/plane"} );
-        res.end("Sergey Belorusets's server.");
-        break;
-    case "/about":
-        res.writeHead( 200, { "Content-Type": "text/plane"} );
-        res.end(`Sergey Belorusets's server.\nVersion: ${version}`);
-        break;
-    default:
-        res.writeHead( 404, { "Content-Type": "text/plane"} );
-        res.end("Not found");
-        break;
-}
-} ).listen(port);
+const app = require("express")();
+app.set("port", process.env.PORT || port);
+ 
+app.get("/", function(req, res) {
+	res.type("text/plain");
+	res.send("Sergey Belorusets's http server");
+});
 
-console.log(`Server ver. ${version} is ruuning on ${port}; press Ctrl+C to stop.`);
+app.get("/about", function(req, res) {
+	res.type("text/plain");
+	res.send(`Sergey Belorusets's http server version ${version}`);
+});
+
+// User page 404
+app.use( function(req, res) {
+	res.type("text/plain");
+	res.status(404);
+	res.send("404 — Not Found");
+});
+
+// User page 500
+app.use( function(err, req, res, next) {
+	console.error(err.stack);
+	res.type("text/plain");
+	res.status(500);
+	res.send("500 — Server error");
+});
+
+app.listen( app.get("port"), function() {
+	console.log( `Server has been started on ${app.get("port")}. Press Ctrl+C to stop.` );
+});
