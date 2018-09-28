@@ -6,30 +6,35 @@ const version = "0.0.0.2";
 
 const app = require("express")();
 app.set("port", process.env.PORT || port);
- 
+
+// Init handlebars
+const handlebars = require("express-handlebars")
+	.create({ defaultLayout: "main" });
+app.engine("handlebars", handlebars.engine);
+app.set("view engine", "handlebars");
+
+//
+// process paths
+//
 app.get("/", function(req, res) {
-	res.type("text/plain");
-	res.send("Sergey Belorusets's http server");
+	res.render("home");
 });
 
 app.get("/about", function(req, res) {
-	res.type("text/plain");
-	res.send(`Sergey Belorusets's http server version ${version}`);
+	res.render("about");
 });
 
 // User page 404
 app.use( function(req, res) {
-	res.type("text/plain");
 	res.status(404);
-	res.send("404 — Not Found");
+	res.render("404");
 });
 
 // User page 500
 app.use( function(err, req, res, next) {
 	console.error(err.stack);
-	res.type("text/plain");
 	res.status(500);
-	res.send("500 — Server error");
+	res.render("500");
 });
 
 app.listen( app.get("port"), function() {
