@@ -2,19 +2,14 @@
 /* eslint-env node */
 
 const port = 33333;
-const version = "0.0.0.2";
+const version = "0.0.0.3";
 
 const app = require("express")();
 app.set("port", process.env.PORT || port);
 
 // Init handlebars
 const handlebars = require("express-handlebars")
-	.create( {
-		defaultLayout: "main",
-		helpers: {
-			version: function() { return version; }
-		}
-	} );
+	.create( { defaultLayout: "main" } );
 app.engine("handlebars", handlebars.engine);
 app.set("view engine", "handlebars");
 
@@ -26,7 +21,9 @@ app.get("/", function(req, res) {
 });
 
 app.get("/about", function(req, res) {
-	res.render("about");
+	res.render("about", {
+		version: version
+	} );
 });
 
 // User page 404
