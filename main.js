@@ -9,7 +9,12 @@ app.set("port", process.env.PORT || port);
 
 // Init handlebars
 const handlebars = require("express-handlebars")
-	.create({ defaultLayout: "main" });
+	.create( {
+		defaultLayout: "main",
+		helpers: {
+			version: function() { return version; }
+		}
+	} );
 app.engine("handlebars", handlebars.engine);
 app.set("view engine", "handlebars");
 
