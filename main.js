@@ -36,7 +36,7 @@ app.get("/about", function(req, res) {
 const labirinth = require("../labirinth/express.js");
 app.get("/labirinth", function(req, res, next) {
 	try{
-		labirinth(express, app, req, res);
+		labirinth.get( express, app, req, res );
 	} catch(e) {
 		console.error("!!! labirint route processor failed:" + e);
 		next();
