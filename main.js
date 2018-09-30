@@ -17,7 +17,12 @@ app.set("view engine", "handlebars");
 // process paths
 //
 app.get("/", function(req, res) {
-	res.render("index");
+	res.render("index", {
+		projects: [
+			{name: "Labirinth", link: "/labirinth"},
+			{name: "About", link: "/about"}
+		]
+	});
 });
 
 app.get("/about", function(req, res) {
