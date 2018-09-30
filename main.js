@@ -17,7 +17,7 @@ app.set("view engine", "handlebars");
 // process paths
 //
 app.get("/", function(req, res) {
-	res.render("home");
+	res.render("index");
 });
 
 app.get("/about", function(req, res) {
