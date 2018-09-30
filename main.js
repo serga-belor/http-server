@@ -34,6 +34,7 @@ app.get("/about", function(req, res) {
 
 // labirinth project
 const labirinth = require("../labirinth/express.js");
+labirinth.static( express, app );
 app.get("/labirinth", function(req, res, next) {
 	try{
 		labirinth.get( express, app, req, res );
