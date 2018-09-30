@@ -2,9 +2,10 @@
 /* eslint-env node */
 
 const port = 33333;
-const version = "0.0.0.3";
+const version = "0.0.0.4";
 
-const app = require("express")();
+const express = require("express");
+const app = express();
 app.set("port", process.env.PORT || port);
 
 // Init handlebars
@@ -31,6 +32,17 @@ app.get("/about", function(req, res) {
 	} );
 });
 
+// labirinth project
+const labirinth = require("../labirinth/express.js");
+app.get("/labirinth", function(req, res, next) {
+	try{
+		labirinth(express, app, req, res);
+	} catch(e) {
+		console.error("!!! labirint route processor failed:" + e);
+		next();
+	}
+});
+
 // User page 404
 app.use( function(req, res) {
 	res.status(404);
@@ -38,7 +50,7 @@ app.use( function(req, res) {
 });
 
 // User page 500
-app.use( function(err, req, res, next) {
+app.use( function(err, req, res, next) { // eslint-disable-line no-unused-vars
 	console.error(err.stack);
 	res.status(500);
 	res.render("500");
